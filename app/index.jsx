@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import ali_milstones from './ali_mistones.jsx';
+import ali_milstones from './ali_mistones';
 import Project2 from './Project2';
 import Project3 from './Project3';
 
