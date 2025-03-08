@@ -1,43 +1,67 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-  }
-  
-  .heading {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .button-row {
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
-    margin-bottom: 20px;
-  }
-  
-  .button {
-    background-color: #007bff;
-    padding: 10px;
-    border-radius: 5px;
-    width: 45%;
-    text-align: center;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .big-button {
-    background-color: #28a745;
-    padding: 15px;
-    border-radius: 5px;
-    width: 80%;
-    text-align: center;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-  }
+/* Ensure the HTML and body take the full viewport */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* hide any vertical scroll, so only horizontal remains */
+  font-family: sans-serif;
+}
+
+/* A container that holds all the "full-page" cards horizontally */
+.project-cards-container {
+  display: flex;
+  flex-direction: row;
+  width: 300%; /* 3 cards = 300%, adjust if you have more or fewer cards */
+  height: calc(100vh - 60px); /* if your NavBar is about 60px tall, adjust if needed */
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory; /* each card snaps into view */
+  scroll-behavior: smooth;       /* smooth scrolling */
+}
+
+/* Each card is the full viewport width and full container height */
+.project-card {
+  width: 100vw;
+  height: 100%;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Hover animation for desktop; you can remove or modify as needed */
+.project-card:hover {
+  transform: scale(1.03);
+}
+
+/* Example color styling for each card. You can pick any combination you like. */
+.card-1 {
+  background: #2f3640; /* dark gray/blue */
+}
+
+.card-2 {
+  background: #353b48; /* slightly lighter variant */
+}
+
+.card-3 {
+  background: #3a3f54; /* another complementary shade */
+}
+
+/* Large text styling for titles */
+.card-title {
+  color: #f5f6fa;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Description text styling */
+.card-description {
+  color: #dcdde1;
+  font-size: 18px;
+  max-width: 80%;
+  text-align: center;
+  line-height: 1.5;
+}
