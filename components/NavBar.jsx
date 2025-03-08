@@ -20,7 +20,7 @@ export default function NavBar() {
           <Text style={{ color: 'white', fontSize: 18 }}>Nika's Milestones</Text>
         </TouchableOpacity>
       </Link>
-      <Link href="/colab_signup" asChild>
+      <Link href="/colab_homepage" asChild>
         <TouchableOpacity>
           <Text style={{ color: 'white', fontSize: 18 }}>MVP</Text>
         </TouchableOpacity>
