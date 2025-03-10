@@ -1,4 +1,3 @@
-Below is a sample professional README.md structure that you can adapt to your repository’s specifics. Simply replace placeholders and customize details (e.g., app name, technologies used, specific steps) as needed. 
 
 ---
 
