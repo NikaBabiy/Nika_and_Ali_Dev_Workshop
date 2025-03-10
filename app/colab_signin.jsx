@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { Query, Account, Databases, Client } from 'appwrite';
+import { profile_page } from '../app/colab_Profile1'; // Assuming this function navigates to the profile page
+import {Sign_up} from '../app/colab_signup';
 
 
 const client = new Client();
 client.setEndpoint('https://cloud.appwrite.io/v1')  // Appwrite API endpoint
-      .setProject('67cda0b40018d09b93a6');  // Your Appwrite Project ID
+  .setProject('67cda0b40018d09b93a6');  // Your Appwrite Project ID
 
 // Initialize the Account service
 const account = new Account(client);
@@ -40,7 +42,7 @@ const Sign_in = () => {
 
       if (session && session.$id) {
         setCurrentUser(email);
-        setIf(2); // Go to profile page
+        profile_page(); // Go to profile page
 
         // Fetch user bio
         await fetchUserBio(email);
@@ -101,7 +103,7 @@ const Sign_in = () => {
         secureTextEntry
       />
       <Button title="Sign In" onPress={signIn} />
-      <Button title="Sign Up" onPress={() => setIf(0)} />
+      <Button title="Sign Up" onPress={() => Sign_up()} />
     </View>
   );
 };

@@ -1,132 +1,72 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
+import { Query, Account, Databases, Client } from 'appwrite';
+import { sign_in_page } from './colab_signin';
 
-// Simple Navbar Component
-function Navbar() {
-  return (
-    <div
-      style={{
-        width: '100%',
-        backgroundColor: '#1a1a2e',
-        padding: '1rem',
-        color: 'white',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}
-    >
-      <div style={{ display: 'flex' }}>
-        <a href="/colab_homepage" style={{ margin: '0 1rem', color: '#f9f9f9ff', textDecoration: 'none' }}>
-          Home
-        </a>
-        <a href="/colab_profile" style={{ margin: '0 1rem', color: '#f9f9f9ff', textDecoration: 'none' }}>
-          Profile
-        </a>
-      </div>
-    </div>
-  );
-}
+const client = new Client();
+client.setEndpoint('https://cloud.appwrite.io/v1')  // Appwrite API endpoint
+  .setProject('67cda0b40018d09b93a6');  // Your Appwrite Project ID
 
-function Logo() {
-  const logoImageUrl = "https://i.pinimg.com/736x/2e/ba/09/2eba09d8aaafc680b8eef0078921241a.jpg";  // Your image URL
+// Initialize the Account service
+const account = new Account(client);
 
-  return (
-    <div style={{
-      position: 'absolute',
-      top: '5rem', // Adjust this to move it down
-      left: '50%',
-      transform: 'translateX(-700%)',
-      display: 'flex',
-      alignItems: 'center',
-      zIndex: 10, 
-    }}>
-      <img src={logoImageUrl} alt="Logo" style={{ height: '80px' }} />
-    </div>
-  );
-}
+// Initialize the Databases service
+const databases = new Databases(client);
 
-// Profile Page Component
-function ColabProfile() {
-  // Dummy user profile data.
-  const userProfile = {
-    userSchoolName: "ABC International School",
-    isIsraeli: true, // true: Israeli, false: Palestinian
-    userLocation: "Tel Aviv, Israel",
-    specialPrograms: "STEM, Arts, Language Exchange",
-    ageGroups: "10-18",
-    languageFocus: "English, Hebrew"
+const ProfileScreen = () => {
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [bio, setBio] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
+  const [screenState, setScreenState] = useState(0); // 0: Sign Up, 1: Sign In, 2: Profile
+  const [time, setTime] = useState('');
+
+  useEffect(() => {
+    const interval = setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const signOut = async () => {
+    try {
+      await account.deleteSession('current');
+      setCurrentUser(null);
+      sign_in_page(); // Assuming this function navigates to sign-in page
+    } catch (error) {
+      Alert.alert('Error', 'Failed to sign out, please try again.');
+    }
+  };
+
+  const saveUserBio = async (userEmail) => {
+    try {
+      await databases.createDocument('67cda1500033be49b7a3', '67cda18c0013cc528fce', 'unique()', { Email: userEmail, Bio: bio });
+    } catch (error) {
+      Alert.alert('Error', 'Failed to save bio, please try again.');
+    }
   };
 
   return (
-    <div>
-      {/* Navbar at the top */}
-      <Navbar />
-      <Logo />
-
-      {/* Profile Card Container */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: '2rem'
-        }}
-      >
-        {/* Profile Card */}
-        <div
-          style={{
-            width: '400px',
-            backgroundColor: '#AEC391',
-            padding: '2rem',
-            borderRadius: '8px',
-            boxShadow: '0 0 10px rgba(20, 17, 17, 0.2)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center'
-          }}
-        >
-          <h2 style={{ marginBottom: '1rem', color: '#232323' }}>{userProfile.userSchoolName}</h2>
-          <p style={{ marginBottom: '0.5rem', color: '#232323' }}>
-            <strong>Nationality:</strong> {userProfile.isIsraeli ? "Israeli" : "Palestinian"}
-          </p>
-          <p style={{ marginBottom: '0.5rem', color: '#232323' }}>
-            <strong>Location:</strong> {userProfile.userLocation}
-          </p>
-          <p style={{ marginBottom: '0.5rem', color: '#232323' }}>
-            <strong>Special Programs:</strong> {userProfile.specialPrograms}
-          </p>
-          <p style={{ marginBottom: '0.5rem', color: '#232323' }}>
-            <strong>Age Groups:</strong> {userProfile.ageGroups}
-          </p>
-          <p style={{ marginBottom: '0.5rem', color: '#232323' }}>
-            <strong>Language Focus:</strong> {userProfile.languageFocus}
-          </p>
-        </div>
-      </div>
-
-      {/* Edit Button under the Profile Card */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: '1rem'
-        }}
-      >
-        <button
-          style={{
-            backgroundColor: '#64adc3',
-            color: 'white',
-            padding: '0.5rem 1rem',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-          onClick={() => console.log("Edit Profile pressed")}
-        >
-          Edit Profile
-        </button>
-      </div>
-    </div>
+    <View style={{ padding: 20 }}>
+      {(
+        <>
+          <Text>Welcome, {currentUser}!</Text>
+          <Text>Current Time: {time}</Text>
+          <Text>Your Bio: {bio}</Text>
+          <TextInput placeholder="Update your bio" value={bio} onChangeText={setBio} style={styles.input} />
+          <Button title="Save Bio" onPress={() => saveUserBio(currentUser)} />
+          <Button title="Sign Out" onPress={signOut} />
+        </>
+      )}
+    </View>
   );
-}
+};
 
-export default ColabProfile;
+const styles = {
+  input: {
+    borderWidth: 1,
+    marginBottom: 10,
+    padding: 10,
+  },
+};
+
+export default ProfileScreen;
