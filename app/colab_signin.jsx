@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
-import { account, databases } from '../yourAppwriteConfig'; // Adjust the import based on your Appwrite setup
-import { Query } from 'appwrite';
+import { Query, Account, Databases, Client } from 'appwrite';
+
+
+const client = new Client();
+client.setEndpoint('https://cloud.appwrite.io/v1')  // Appwrite API endpoint
+      .setProject('67cda0b40018d09b93a6');  // Your Appwrite Project ID
+
+// Initialize the Account service
+const account = new Account(client);
+
+// Initialize the Databases service
+const databases = new Databases(client);
 
 const Sign_in = () => {
   const [email, setEmail] = useState('');
