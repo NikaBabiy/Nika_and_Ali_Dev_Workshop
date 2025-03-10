@@ -154,10 +154,10 @@ Here are some future enhancements we have in mind:
 ## About the Developers
 
 - **Nika Babiy**  
-  *Role:* Developer in the start-up Qalb Le Lev
+  *Role:* Developer in the start-up Qalb Le Lev.
   
 - **Ali Abu Salih** 
-  *Role:* Developer in the start-up Qalb Le Lev 
+*Role:* Developer in the start-up Qalb Le Lev.
  
 
 
