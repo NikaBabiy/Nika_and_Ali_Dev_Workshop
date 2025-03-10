@@ -128,11 +128,11 @@ Here are some future enhancements we have in mind:
   *Role:* Project Initiator & Core Developer  
   *Contributions:* Architecture design, core feature implementation, code reviews.  
 
-- **Ali [Last Name]*  
+- **Ali Abu Salih** 
   *Role:* Co-Instructor & Feature Owner  
   *Contributions:* Workshop instruction, feature planning, collaboration management.  
 
-> *Feel free to list any additional contributors here along with their roles and a brief description of their contributions.*
+
 
 ---
 
@@ -142,14 +142,7 @@ Thank you for checking out **Nika and Ali Dev Workshop**—we hope this project 
 
 ---
 
-*Last Updated: [Month Day, Year]*
+*Last Updated: [10/03/2025]*
 
 ---
 
-### License
-
-If you plan to distribute your work with an open-source license or any other license, include the details here (e.g., MIT, Apache 2.0, etc.).
-
----
-
-**Disclaimer:** The instructions and features above serve as an example layout. Adjust all specifics to align with your actual project requirements and stack.
