@@ -40,9 +40,9 @@ function Navbar() {
 
 // Profile Page Component
 function ColabProfile() {
-  // Dummy user profile data. Replace this with your actual data source.
+  // Dummy user profile data.
   const userProfile = {
-    userSchoolName: "Example International School",
+    userSchoolName: "ABC International School",
     isIsraeli: true, // true: Israeli, false: Palestinian
     userLocation: "Tel Aviv, Israel",
     specialPrograms: "STEM, Arts, Language Exchange",

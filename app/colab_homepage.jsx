@@ -27,7 +27,7 @@ function Navbar() {
 // Replace this with your actual user profile context or props.
 const useUserProfile = () => {
   return {
-    userSchoolName: "Example International School",
+    userSchoolName: "ABC International School",
     isIsraeli: true, // if true, show Palestinian schools
     userLocation: { lat: 32.0853, lng: 34.7818 }, // Example: Tel Aviv coordinates
   };
@@ -56,7 +56,7 @@ function ColabHomepage() {
   const cardRef = useRef(null);
 
   useEffect(() => {
-    // Dummy school data; in production, fetch from your database.
+    // Dummy school data
     const dummyData = [
       {
         id: 1,

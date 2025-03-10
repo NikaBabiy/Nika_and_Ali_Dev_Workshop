@@ -31,22 +31,22 @@ html, body {
   transition: transform 0.3s ease-in-out;
 }
 
-/* Hover animation for desktop; you can remove or modify as needed */
+/* Hover animation for desktop */
 .project-card:hover {
   transform: scale(1.03);
 }
 
-/* Example color styling for each card. You can pick any combination you like. */
+/* color styling for each card */
 .card-1 {
-  background: #2f3640; /* dark gray/blue */
+  background: #79affa; 
 }
 
 .card-2 {
-  background: #353b48; /* slightly lighter variant */
+  background: #51545b; 
 }
 
 .card-3 {
-  background: #3a3f54; /* another complementary shade */
+  background: #969fc4; 
 }
 
 /* Large text styling for titles */

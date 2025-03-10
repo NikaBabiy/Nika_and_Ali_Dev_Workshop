@@ -9,7 +9,7 @@ export default function ProjectSelection() {
       <div className="project-card card-1">
         <Text className="card-title">Ali's Milestones</Text>
         <Text className="card-description">
-          Track Ali's progress and achievements in this project.
+         Ali's anazing milestones
         </Text>
       </div>
 
@@ -17,7 +17,7 @@ export default function ProjectSelection() {
       <div className="project-card card-2">
         <Text className="card-title">Nika's Milestones</Text>
         <Text className="card-description">
-          Explore Nika's journey and development milestones.
+          Nika's amazing milestones
         </Text>
       </div>
 
@@ -25,7 +25,7 @@ export default function ProjectSelection() {
       <div className="project-card card-3">
         <Text className="card-title">Our MVP</Text>
         <Text className="card-description">
-          Dive into our Minimum Viable Product and its features.
+          Our great Minimum Viable Product.
         </Text>
       </div>
     </div>
