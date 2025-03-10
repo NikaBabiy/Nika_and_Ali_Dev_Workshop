@@ -3,10 +3,13 @@
 
 # Nika and Ali Dev Workshop
 
-A hands-on development workshop project focusing on building modern applications, demonstrating best practices, and fostering collaboration. This repository showcases how to set up and maintain a streamlined development environment for creating and testing new features rapidly.
+Expo React-Native ptoject combining Nika's and Ali's previous milstones with the final milstone that we did as a team! 
+Our MVP project is an app that will serve as a part of our start-up "Qalb Le Lev". 
+**Disclaimer - this is only the minimum viable product and future changes will be done as this project contains 'dummy' parts** 
 
 ## Table of Contents
 - [Project Description](#project-description)
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Running the App](#running-the-app)
 - [Features](#features)
@@ -14,89 +17,120 @@ A hands-on development workshop project focusing on building modern applications
 - [Contributing Developers](#contributing-developers)
 
 ---
-
 ## Project Description
 
-The **Nika and Ali Dev Workshop** is designed to:
-- Provide a collaborative space where developers can explore new technologies, coding patterns, and testing strategies.
-- Serve as an example of end-to-end workflows, including coding standards, code reviews, continuous integration, and deployment.
-- Enable a hands-on learning approach, allowing participants to learn by building rather than just reading documentation.
+The **Nika and Ali Dev Workshop** is our MVP project: 
+- The part of the mvp app  will serve as a part solution of our start-up "Qalb Le Lev". 
+- The project also includes previous milestones Nika and Ali had to do as a part of our deveoper track in MEET. 
+
+**Disclaimer - this is only the minimum viable product and future changes will be done as this project contains 'dummy' parts** 
 
 ---
+## Prerequisites
 
+1. **Node.js** (LTS version recommended: 14 or above).
+
+
+2. **Git** (for cloning the repository).
+
+3. **Expo CLI** (installed globally or used via npx):
+   ```npm install --global expo-cli ```
+   (Alternatively, you can run npx expo commands without installing Expo CLI globally.)
+   
+4. A device or emulator:
+
+- iOS Simulator (macOS only) via Xcode.
+
+- Android Emulator via Android Studio.
+
+- Or use an actual device with the Expo Go app.
+
+
+---
 ## Installation
 
 1. **Clone the Repository**  
-   ```bash
+```bash
    git clone https://github.com/NikaBabiy/Nika_and_Ali_Dev_Workshop.git
    cd Nika_and_Ali_Dev_Workshop
    ```
 
 2. **Install Dependencies**  
    Depending on the technology stack, run the package manager of your choice. For example (if using Node.js):
-   ```bash
+```bash
    npm install
    ```
    or
-   ```bash
+   
+```bash
    yarn
    ```
+   This command installs all required libraries declared in the package.json.
 
-3. **Set Up Environment Variables (if applicable)**  
-   - Copy the `.env.example` file to `.env`.
-   - Add your specific environment variables, such as API keys or database credentials, in the `.env` file.
+
+3. (Optional) Manually Install Expo Libraries
+If your package.json doesn’t already include them, ensure you have the following core libraries for a standard Expo React Native project:
+
+```bash
+ npx expo install react react-native expo
+```
+
+This aligns the versions of React Native, React, and Expo with the Expo SDK version.
+
+4. (Optional) Other Common Libraries
+You might need additional libraries. Some typical ones include:
+```bash
+ # React Navigation + Related Packages
+npx expo install @react-navigation/native
+npx expo install react-native-screens react-native-safe-area-context 
+# (Needed for navigation)
+
+# Redux (if used for state management)
+npm install @reduxjs/toolkit react-redux
+
+# UI Libraries (examples)
+npm install react-native-paper
+# or
+npm install native-base
+```
+
 
 ---
 
 ## Running the App
 
-1. **Local Development**  
+1. ** Start the Development Server
+From your project root directory, run:**  
    ```bash
-   npm start
+   npx expo start -c
    ```
-   or
-   ```bash
-   yarn start
-   ```
+   -c clears the Expo cache to prevent any build or caching issues.
+
    This will launch the local development server, allowing you to view the app in your browser at `http://localhost:3000` (or whichever port is set).
 
-2. **Build for Production**  
-   ```bash
-   npm run build
-   ```
-   or
-   ```bash
-   yarn build
-   ```
-   This will create a production-ready bundle in the `build` (or similarly named) directory. 
+2. Open the App
 
-3. **Testing**  
-   ```bash
-   npm test
-   ```
-   or
-   ```bash
-   yarn test
-   ```
-   Runs unit and integration tests to ensure code reliability and performance.
+- Mobile Device: Scan the QR code that appears in your terminal or in the Expo Dev Tools using the Expo Go app on your phone.
+
+- iOS Simulator (macOS only): Press i in the terminal.
+
+- Android Emulator: Press a in the terminal.
+
+- Web: Press w in the terminal (if you’re using the web target provided by Expo).
+
 
 ---
 
 ## Features
 
-- **Feature 1: Example Integration**  
-  A demonstration of integrating an external service or library for streamlined data processing.
+- **Feature 1: Connected Real_Time Database **  
+ In our MVP project you can see the implementation of a real-time database ✅
 
-- **Feature 2: Real-Time Collaboration**  
-  Leverages websockets or event-driven architecture to enable real-time updates and user interactions.
+- **Feature 2: Modern Aestetic Design**  
+  Our app features a sleek, modern design with a clean layout, intuitive navigation, and a visually appealing aesthetic that enhances user experience. ✅
 
-- **Feature 3: Modular Codebase**  
-  Well-organized folders and reusable components to keep the codebase maintainable and scalable.
-
-- **Feature 4: Continuous Integration (CI) & Deployment**  
-  Automated testing and deployment scripts that ensure new code is tested thoroughly and deployed smoothly.
-
-Feel free to modify or expand this list according to the actual functionality your project currently offers.
+- **Feature 3: Neat Written Code **  
+  Our app is built with clean, well-structured code that ensures efficiency, maintainability, and smooth performance. ✅
 
 ---
 
@@ -105,33 +139,27 @@ Feel free to modify or expand this list according to the actual functionality yo
 Here are some future enhancements we have in mind:
 
 1. **Enhanced UI/UX**  
-   - Integrate responsive design improvements.  
+   - Integrate a more responsive design improvements.  
    - Add new interactive UI elements and animations.
 
-2. **Automated End-to-End Testing**  
-   - Increase test coverage by adding Cypress or similar tooling.  
-   - Automate deployment checks to maintain high-quality releases.
+2. **API Integration**  
+   - Implement APIs that will take real data about existing Israeli & Palestinian schools.  
+   - Add the opthion to edit your school data.
 
-3. **API Integration & Scaling**  
-   - Implement additional APIs or microservices for extended functionality.  
-   - Optimize for performance as data and user base grow.
-
-4. **Internationalization (i18n)**  
-   - Expand language support to cater to a global audience.  
-   - Provide translation and localization management workflows.
+3. **Adding a Feature for Students**  
+   - Making the app accessible for students that already got to know eachother with the assistance of Qalb Le Lev.  
+   
 
 ---
 
-## Contributing Developers
+## About the Developers
 
 - **Nika Babiy**  
-  *Role:* Project Initiator & Core Developer  
-  *Contributions:* Architecture design, core feature implementation, code reviews.  
-
+  *Role:* Developer in the start-up Qalb Le Lev
+  
 - **Ali Abu Salih** 
-  *Role:* Co-Instructor & Feature Owner  
-  *Contributions:* Workshop instruction, feature planning, collaboration management.  
-
+  *Role:* Developer in the start-up Qalb Le Lev 
+ 
 
 
 ---
