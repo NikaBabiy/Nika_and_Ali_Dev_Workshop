@@ -21,12 +21,23 @@ function Navbar() {
 
 // Logo Component on the Left Side
 function Logo() {
+  const logoImageUrl = "https://i.pinimg.com/736x/2e/ba/09/2eba09d8aaafc680b8eef0078921241a.jpg";  // Your image URL
+
   return (
-    <View style={styles.logoContainer}>
-      <Image source={logopic} style={styles.logo} />
-    </View>
+    <div style={{
+      position: 'absolute',
+      top: '5rem', // Adjust this to move it down
+      left: '50%',
+      transform: 'translateX(-700%)',
+      display: 'flex',
+      alignItems: 'center',
+      zIndex: 10, 
+    }}>
+      <img src={logoImageUrl} alt="Logo" style={{ height: '80px' }} />
+    </div>
   );
 }
+
 
 // Dummy hook to simulate user profile.
 const useUserProfile = () => {

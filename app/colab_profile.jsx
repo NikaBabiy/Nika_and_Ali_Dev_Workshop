@@ -26,6 +26,24 @@ function Navbar() {
   );
 }
 
+function Logo() {
+  const logoImageUrl = "https://i.pinimg.com/736x/2e/ba/09/2eba09d8aaafc680b8eef0078921241a.jpg";  // Your image URL
+
+  return (
+    <div style={{
+      position: 'absolute',
+      top: '5rem', // Adjust this to move it down
+      left: '50%',
+      transform: 'translateX(-700%)',
+      display: 'flex',
+      alignItems: 'center',
+      zIndex: 10, 
+    }}>
+      <img src={logoImageUrl} alt="Logo" style={{ height: '80px' }} />
+    </div>
+  );
+}
+
 // Profile Page Component
 function ColabProfile() {
   // Dummy user profile data.
@@ -42,6 +60,7 @@ function ColabProfile() {
     <div>
       {/* Navbar at the top */}
       <Navbar />
+      <Logo />
 
       {/* Profile Card Container */}
       <div
