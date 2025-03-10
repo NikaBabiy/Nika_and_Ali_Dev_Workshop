@@ -145,21 +145,32 @@ function ColabHomepage() {
   const distance = calculateDistance(userLocation, currentSchool.location);
 
   return (
+<<<<<<< HEAD
     <View style={{ minHeight: '100vh', overflow: 'auto' }}>
       <Navbar />
       <Logo />
       <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 20 }}>
+=======
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Navbar />
+      <Logo />
+      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+>>>>>>> c50942089f504fe63250f92e552d9bfb2e5421b3
         <TinderCard
           ref={cardRef}
           key={currentSchool.id}
           onSwipe={(dir) => handleSwipe(dir, currentSchool.id)}
-          onCardLeftScreen={(dir) => console.log('Card left screen: ', dir)}
           preventSwipe={['up', 'down']}
         >
           <View
             style={{
+<<<<<<< HEAD
               width: 300,
               height: 400,
+=======
+              width: '280px', // Reduced width
+              height: '350px', // Reduced height
+>>>>>>> c50942089f504fe63250f92e552d9bfb2e5421b3
               backgroundColor: '#aec391',
               padding: 10,
               boxShadow: '0 0 5px rgba(0,0,0,0.3)',
@@ -169,6 +180,10 @@ function ColabHomepage() {
               justifyContent: 'space-between',
               cursor: 'grab',
               color: '#232323',
+<<<<<<< HEAD
+=======
+              marginTop: '50px' // Added margin to push it lower
+>>>>>>> c50942089f504fe63250f92e552d9bfb2e5421b3
             }}
           >
             <View>
