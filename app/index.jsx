@@ -1,33 +1,68 @@
 import React from 'react';
-import { Text } from 'react-native';
-import '../assets/ProjectSelection.css'; // Import the CSS file
+import { View, Text, StyleSheet } from 'react-native';
 
 export default function ProjectSelection() {
   return (
-    <div className="project-cards-container">
+    <View style={styles.projectCardsContainer}>
       {/* Card 1 */}
-      <div className="project-card card-1">
-        <Text className="card-title">Ali's Milestones</Text>
-        <Text className="card-description">
-         Ali's anazing milestones
-        </Text>
-      </div>
+      <View style={[styles.projectCard, styles.card1]}>
+        <Text style={styles.cardTitle}>Ali's Milestones</Text>
+        <Text style={styles.cardDescription}>Ali's amazing milestones</Text>
+      </View>
 
       {/* Card 2 */}
-      <div className="project-card card-2">
-        <Text className="card-title">Nika's Milestones</Text>
-        <Text className="card-description">
-          Nika's amazing milestones
-        </Text>
-      </div>
+      <View style={[styles.projectCard, styles.card2]}>
+        <Text style={styles.cardTitle}>Nika's Milestones</Text>
+        <Text style={styles.cardDescription}>Nika's amazing milestones</Text>
+      </View>
 
       {/* Card 3 */}
-      <div className="project-card card-3">
-        <Text className="card-title">Our MVP</Text>
-        <Text className="card-description">
-          Our great Minimum Viable Product.
-        </Text>
-      </div>
-    </div>
+      <View style={[styles.projectCard, styles.card3]}>
+        <Text style={styles.cardTitle}>Our MVP</Text>
+        <Text style={styles.cardDescription}>Our great Minimum Viable Product.</Text>
+      </View>
+    </View>
   );
 }
+
+// Styles for the ProjectSelection component
+const styles = StyleSheet.create({
+  projectCardsContainer: {
+    flexDirection: 'row', // Align cards horizontally
+    flexWrap: 'wrap',     // Wrap cards onto the next line if necessary
+    justifyContent: 'center', // Center the cards
+    padding: 10,
+    marginTop: 50,         // Add margin top to move the cards down
+  },
+  projectCard: {
+    width: 250,            // Width of each card
+    height: 150,           // Height of each card
+    margin: 10,            // Margin between cards
+    borderRadius: 8,       // Rounded corners
+    padding: 10,           // Padding inside the card
+    backgroundColor: '#ececec', // Light background color for the card
+    shadowColor: '#000',   // Shadow color for the card
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+  },
+  card1: {
+    backgroundColor: '#f1c40f', // Yellow background for card 1
+  },
+  card2: {
+    backgroundColor: '#e74c3c', // Red background for card 2
+  },
+  card3: {
+    backgroundColor: '#2ecc71', // Green background for card 3
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  cardDescription: {
+    fontSize: 14,
+    color: '#7f8c8d',
+  },
+});
+

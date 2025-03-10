@@ -1,44 +1,44 @@
 import React, { useState, useEffect, useRef } from 'react';
-import TinderCard from 'react-tinder-card';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
+import TinderCard from 'react-native-deck-swiper'; // Use a React Native compatible card swiper
 import logopic from '../assets/images/logopic.png';
 
 // Simple Navbar Component
 function Navbar() {
   return (
-    <div style={{
+    <View style={{
       width: '100%',
       backgroundColor: '#1a1a2e',
-      padding: '1rem',
+      padding: 10,
       color: '#e94560',
-      display: 'flex',
+      flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center'
     }}>
-      {/* Nav Links */}
-      <div style={{ display: 'flex' }}>
-        <a href="/colab_homepage" style={{ margin: '0 1rem', color: '#f9f9f9ff', textDecoration: 'none' }}>
-          Home
-        </a>
-        <a href="/colab_profile" style={{ margin: '0 1rem', color: '#f9f9f9ff', textDecoration: 'none' }}>
-          Profile
-        </a>
-      </div>
-    </div>
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity style={{ marginHorizontal: 10 }}>
+          <Text style={{ color: '#f9f9f9ff' }}>Home</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ marginHorizontal: 10 }}>
+          <Text style={{ color: '#f9f9f9ff' }}>Profile</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
 // Logo Component on the Left Side
 function Logo() {
   return (
-    <div style={{
-      position: 'fixed',
-      top: '1rem',
-      left: '1rem',
+    <View style={{
+      position: 'absolute',
+      top: 10,
+      left: 10,
       display: 'flex',
       alignItems: 'center',
     }}>
-      <img src={logopic} alt="Logo" style={{ height: '40px' }} />
-    </div>
+      <Image source={logopic} style={{ height: 40 }} />
+    </View>
   );
 }
 
@@ -69,7 +69,7 @@ function ColabHomepage() {
   const [schools, setSchools] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const { isIsraeli, userLocation } = useUserProfile();
-  
+
   const cardRef = useRef(null);
 
   useEffect(() => {
@@ -120,24 +120,24 @@ function ColabHomepage() {
 
   const swipeLeft = () => {
     if (cardRef.current) {
-      cardRef.current.swipe('left');
+      cardRef.current.swipeLeft();
     }
   };
 
   const swipeRight = () => {
     if (cardRef.current) {
-      cardRef.current.swipe('right');
+      cardRef.current.swipeRight();
     }
   };
 
   if (currentIndex >= schools.length) {
     return (
-      <div>
+      <View>
         <Navbar />
-        <div style={{ textAlign: 'center', marginTop: '2rem', color: '#232323' }}>
+        <Text style={{ textAlign: 'center', marginTop: 20, color: '#232323' }}>
           No more schools to match with right now!
-        </div>
-      </div>
+        </Text>
+      </View>
     );
   }
 
@@ -145,10 +145,10 @@ function ColabHomepage() {
   const distance = calculateDistance(userLocation, currentSchool.location);
 
   return (
-    <div style={{ minHeight: '100vh', overflow: 'auto' }}>
+    <View style={{ minHeight: '100vh', overflow: 'auto' }}>
       <Navbar />
       <Logo />
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem' }}>
+      <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 20 }}>
         <TinderCard
           ref={cardRef}
           key={currentSchool.id}
@@ -156,44 +156,45 @@ function ColabHomepage() {
           onCardLeftScreen={(dir) => console.log('Card left screen: ', dir)}
           preventSwipe={['up', 'down']}
         >
-          <div
+          <View
             style={{
-              width: '300px',
-              height: '400px',
+              width: 300,
+              height: 400,
               backgroundColor: '#aec391',
-              padding: '1rem',
+              padding: 10,
               boxShadow: '0 0 5px rgba(0,0,0,0.3)',
-              borderRadius: '8px',
+              borderRadius: 8,
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
               cursor: 'grab',
-              color: '#232323'
+              color: '#232323',
             }}
           >
-            <div>
-              <h2 style={{ margin: '0 0 0.5rem' }}>{currentSchool.name}</h2>
-              <p style={{ margin: '0 0 0.5rem' }}>{currentSchool.description}</p>
-              <p style={{ margin: '0 0 0.5rem' }}>
+            <View>
+              <Text style={{ marginBottom: 10 }}>{currentSchool.name}</Text>
+              <Text style={{ marginBottom: 10 }}>{currentSchool.description}</Text>
+              <Text style={{ marginBottom: 10 }}>
                 Rating: {currentSchool.rating} / 5
-              </p>
-            </div>
-            <div>
-              <p style={{ margin: 0 }}>Distance: {distance} km</p>
-            </div>
-          </div>
+              </Text>
+            </View>
+            <View>
+              <Text>Distance: {distance} km</Text>
+            </View>
+          </View>
         </TinderCard>
-        <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem' }}>
-          <button onClick={swipeLeft} style={{ padding: '0.5rem 1rem', fontSize: '1rem', backgroundColor: '#64adc3', color: '#232323', border: 'none', borderRadius: '4px' }}>
-            Dislike
-          </button>
-          <button onClick={swipeRight} style={{ padding: '0.5rem 1rem', fontSize: '1rem', backgroundColor: '#64adc3', color: '#232323', border: 'none', borderRadius: '4px' }}>
-            Like
-          </button>
-        </div>
-      </div>
-    </div>
+        <View style={{ marginTop: 10, flexDirection: 'row', gap: 10 }}>
+          <TouchableOpacity onPress={swipeLeft} style={{ padding: 10, backgroundColor: '#64adc3' }}>
+            <Text>Dislike</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={swipeRight} style={{ padding: 10, backgroundColor: '#64adc3' }}>
+            <Text>Like</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
   );
 }
 
 export default ColabHomepage;
+

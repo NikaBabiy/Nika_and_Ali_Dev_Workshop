@@ -1,4 +1,4 @@
-const sign_in = () =>{
+const Sign_in = () =>{
 
     useEffect(() => {
         const interval = setInterval(() => {
