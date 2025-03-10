@@ -1,30 +1,48 @@
 import React, { useState, useEffect, useRef } from 'react';
 import TinderCard from 'react-tinder-card';
+import logopic from '../assets/images/logopic.png';
 
 // Simple Navbar Component
 function Navbar() {
   return (
-    <div style={{ 
-      width: '100%', 
-      backgroundColor: '#333', 
-      padding: '1rem', 
-      color: 'white', 
-      display: 'flex', 
-      justifyContent: 'center', 
+    <div style={{
+      width: '100%',
+      backgroundColor: '#1a1a2e',
+      padding: '1rem',
+      color: '#e94560',
+      display: 'flex',
+      justifyContent: 'center',
       alignItems: 'center'
     }}>
-      <a href="/colab_homepage" style={{ margin: '0 1rem', color: 'white', textDecoration: 'none' }}>
-        Home
-      </a>
-      <a href="/colab_profile" style={{ margin: '0 1rem', color: 'white', textDecoration: 'none' }}>
-        Profile
-      </a>
+      {/* Nav Links */}
+      <div style={{ display: 'flex' }}>
+        <a href="/colab_homepage" style={{ margin: '0 1rem', color: '#f9f9f9ff', textDecoration: 'none' }}>
+          Home
+        </a>
+        <a href="/colab_profile" style={{ margin: '0 1rem', color: '#f9f9f9ff', textDecoration: 'none' }}>
+          Profile
+        </a>
+      </div>
+    </div>
+  );
+}
+
+// Logo Component on the Left Side
+function Logo() {
+  return (
+    <div style={{
+      position: 'fixed',
+      top: '1rem',
+      left: '1rem',
+      display: 'flex',
+      alignItems: 'center',
+    }}>
+      <img src={logopic} alt="Logo" style={{ height: '40px' }} />
     </div>
   );
 }
 
 // Dummy hook to simulate user profile.
-// Replace this with your actual user profile context or props.
 const useUserProfile = () => {
   return {
     userSchoolName: "ABC International School",
@@ -52,11 +70,9 @@ function ColabHomepage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { isIsraeli, userLocation } = useUserProfile();
   
-  // Create a ref for the TinderCard to trigger programmatic swipes.
   const cardRef = useRef(null);
 
   useEffect(() => {
-    // Dummy school data
     const dummyData = [
       {
         id: 1,
@@ -84,12 +100,10 @@ function ColabHomepage() {
       }
     ];
 
-    // Filter out schools that match the user's own nationality.
     const filteredSchools = dummyData.filter(school => {
       return isIsraeli ? school.nationality === 'Palestinian' : school.nationality === 'Israeli';
     });
 
-    // (Optional) Sort by distance.
     const sortedSchools = filteredSchools.sort((a, b) => {
       const distA = calculateDistance(userLocation, a.location);
       const distB = calculateDistance(userLocation, b.location);
@@ -99,32 +113,28 @@ function ColabHomepage() {
     setSchools(sortedSchools);
   }, [isIsraeli, userLocation]);
 
-  // Handler when a swipe is completed.
   const handleSwipe = (direction, schoolId) => {
     console.log(`Swiped ${direction} on school ${schoolId}`);
     setCurrentIndex(prev => prev + 1);
   };
 
-  // Programmatically trigger a left swipe.
   const swipeLeft = () => {
     if (cardRef.current) {
       cardRef.current.swipe('left');
     }
   };
 
-  // Programmatically trigger a right swipe.
   const swipeRight = () => {
     if (cardRef.current) {
       cardRef.current.swipe('right');
     }
   };
 
-  // If we've run out of schools, show a message.
   if (currentIndex >= schools.length) {
     return (
       <div>
         <Navbar />
-        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+        <div style={{ textAlign: 'center', marginTop: '2rem', color: '#232323' }}>
           No more schools to match with right now!
         </div>
       </div>
@@ -135,10 +145,9 @@ function ColabHomepage() {
   const distance = calculateDistance(userLocation, currentSchool.location);
 
   return (
-    <div>
-      {/* Navbar on top */}
+    <div style={{ minHeight: '100vh', overflow: 'auto' }}>
       <Navbar />
-
+      <Logo />
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem' }}>
         <TinderCard
           ref={cardRef}
@@ -151,14 +160,15 @@ function ColabHomepage() {
             style={{
               width: '300px',
               height: '400px',
-              backgroundColor: '#fff',
+              backgroundColor: '#aec391',
               padding: '1rem',
               boxShadow: '0 0 5px rgba(0,0,0,0.3)',
               borderRadius: '8px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              cursor: 'grab'
+              cursor: 'grab',
+              color: '#232323'
             }}
           >
             <div>
@@ -173,12 +183,11 @@ function ColabHomepage() {
             </div>
           </div>
         </TinderCard>
-        {/* Action Buttons */}
         <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem' }}>
-          <button onClick={swipeLeft} style={{ padding: '0.5rem 1rem', fontSize: '1rem' }}>
+          <button onClick={swipeLeft} style={{ padding: '0.5rem 1rem', fontSize: '1rem', backgroundColor: '#64adc3', color: '#232323', border: 'none', borderRadius: '4px' }}>
             Dislike
           </button>
-          <button onClick={swipeRight} style={{ padding: '0.5rem 1rem', fontSize: '1rem' }}>
+          <button onClick={swipeRight} style={{ padding: '0.5rem 1rem', fontSize: '1rem', backgroundColor: '#64adc3', color: '#232323', border: 'none', borderRadius: '4px' }}>
             Like
           </button>
         </div>
