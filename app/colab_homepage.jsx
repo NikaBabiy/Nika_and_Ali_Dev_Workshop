@@ -145,21 +145,20 @@ function ColabHomepage() {
   const distance = calculateDistance(userLocation, currentSchool.location);
 
   return (
-    <div style={{ minHeight: '100vh', overflow: 'auto' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
       <Logo />
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem' }}>
+      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <TinderCard
           ref={cardRef}
           key={currentSchool.id}
           onSwipe={(dir) => handleSwipe(dir, currentSchool.id)}
-          onCardLeftScreen={(dir) => console.log('Card left screen: ', dir)}
           preventSwipe={['up', 'down']}
         >
           <div
             style={{
-              width: '300px',
-              height: '400px',
+              width: '280px', // Reduced width
+              height: '350px', // Reduced height
               backgroundColor: '#aec391',
               padding: '1rem',
               boxShadow: '0 0 5px rgba(0,0,0,0.3)',
@@ -168,7 +167,8 @@ function ColabHomepage() {
               flexDirection: 'column',
               justifyContent: 'space-between',
               cursor: 'grab',
-              color: '#232323'
+              color: '#232323',
+              marginTop: '50px' // Added margin to push it lower
             }}
           >
             <div>
