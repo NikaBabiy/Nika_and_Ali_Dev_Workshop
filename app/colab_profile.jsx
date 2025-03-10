@@ -14,26 +14,14 @@ function Navbar() {
         alignItems: 'center'
       }}
     >
-      <a
-        href="/"
-        style={{
-          margin: '0 1rem',
-          color: 'white',
-          textDecoration: 'none'
-        }}
-      >
-        Home
-      </a>
-      <a
-        href="/profile"
-        style={{
-          margin: '0 1rem',
-          color: 'white',
-          textDecoration: 'none'
-        }}
-      >
-        Profile
-      </a>
+     <div style={{ display: 'flex' }}>
+        <a href="/colab_homepage" style={{ margin: '0 1rem', color: '#f9f9f9ff', textDecoration: 'none' }}>
+          Home
+        </a>
+        <a href="/colab_profile" style={{ margin: '0 1rem', color: '#f9f9f9ff', textDecoration: 'none' }}>
+          Profile
+        </a>
+      </div>
     </div>
   );
 }
