@@ -156,7 +156,7 @@ Here are some future enhancements we have in mind:
 - **Nika Babiy**  
   *Role:* Developer in the start-up Qalb Le Lev.
   
- **Ali Abu Salih**  
+- **Ali Abu Salih**  
   *Role:* Developer in the start-up Qalb Le Lev.
   
 
