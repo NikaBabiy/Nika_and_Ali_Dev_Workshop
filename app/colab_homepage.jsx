@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import TinderCard from 'react-native-deck-swiper'; // Use a React Native compatible card swiper
-import logopic from '../assets/images/logopic.png';
 
 // Simple Navbar Component
 function Navbar() {
@@ -19,25 +18,20 @@ function Navbar() {
   );
 }
 
-// Logo Component on the Left Side
+// Logo Component
 function Logo() {
-  const logoImageUrl = "https://i.pinimg.com/736x/2e/ba/09/2eba09d8aaafc680b8eef0078921241a.jpg";  // Your image URL
+  const logoImageUrl = "https://i.pinimg.com/736x/2e/ba/09/2eba09d8aaafc680b8eef0078921241a.jpg";  // Your logo image URL
 
   return (
-    <div style={{
-      position: 'absolute',
-      top: '5rem', // Adjust this to move it down
-      left: '50%',
-      transform: 'translateX(-700%)',
-      display: 'flex',
-      alignItems: 'center',
-      zIndex: 10, 
-    }}>
-      <img src={logoImageUrl} alt="Logo" style={{ height: '80px' }} />
-    </div>
+    <View style={styles.logoContainer}>
+      <Image
+        source={{ uri: logoImageUrl }}
+        style={styles.logo}
+        resizeMode="contain" // Ensures the logo scales nicely without distortion
+      />
+    </View>
   );
 }
-
 
 // Dummy hook to simulate user profile.
 const useUserProfile = () => {
@@ -63,7 +57,7 @@ const calculateDistance = (loc1, loc2) => {
 };
 
 function ColabHomepage() {
-  const [schools, setSchools] = useState([]);
+  const [schools, setSchools] = useState([]); // Ensure it's always an array
   const [currentIndex, setCurrentIndex] = useState(0);
   const { isIsraeli, userLocation } = useUserProfile();
 
@@ -127,10 +121,12 @@ function ColabHomepage() {
     }
   };
 
+  // Add the condition here to handle when there are no schools left
   if (currentIndex >= schools.length) {
     return (
       <View style={styles.container}>
         <Navbar />
+        <Logo />
         <Text style={styles.noSchoolsText}>
           No more schools to match with right now!
         </Text>
@@ -138,7 +134,18 @@ function ColabHomepage() {
     );
   }
 
+  // Ensure that `schools` is passed as cards to the TinderCard component
   const currentSchool = schools[currentIndex];
+  if (!currentSchool) {
+    return (
+      <View style={styles.container}>
+        <Navbar />
+        <Logo />
+        <Text style={styles.noSchoolsText}>No more schools to match with right now!</Text>
+      </View>
+    );
+  }
+
   const distance = calculateDistance(userLocation, currentSchool.location);
 
   return (
@@ -148,17 +155,25 @@ function ColabHomepage() {
       <View style={styles.cardContainer}>
         <TinderCard
           ref={cardRef}
-          key={currentSchool.id}
+          cards={schools} // Pass the `schools` array here
+          renderCard={(school) => {
+            // Check if `school` is valid before rendering
+            if (!school) {
+              return <Text>No school data</Text>; // Or render a fallback UI
+            }
+
+            return (
+              <View style={styles.card}>
+                <Text style={styles.cardTitle}>{school.name}</Text>
+                <Text style={styles.cardDescription}>{school.description}</Text>
+                <Text style={styles.cardRating}>Rating: {school.rating} / 5</Text>
+                <Text>Distance: {distance} km</Text>
+              </View>
+            );
+          }}
           onSwipe={(dir) => handleSwipe(dir, currentSchool.id)}
           preventSwipe={['up', 'down']}
-        >
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>{currentSchool.name}</Text>
-            <Text style={styles.cardDescription}>{currentSchool.description}</Text>
-            <Text style={styles.cardRating}>Rating: {currentSchool.rating} / 5</Text>
-            <Text>Distance: {distance} km</Text>
-          </View>
-        </TinderCard>
+        />
         <View style={styles.swipeButtonsContainer}>
           <TouchableOpacity onPress={swipeLeft} style={styles.swipeButton}>
             <Text style={styles.buttonText}>Dislike</Text>
@@ -198,13 +213,14 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     position: 'absolute',
-    top: 10,
-    left: 10,
-    alignItems: 'center',
+    top: 30, // Adjust logo's position from top
+    left: '50%',
+    transform: [{ translateX: -40 }], // Adjust this to a fixed value like -40px to center
+    zIndex: 1, // Ensure it's on top of other components
   },
   logo: {
-    height: 40,
-    width: 40,
+    height: 80, // Adjust the size of the logo
+    width: 80,
   },
   cardContainer: {
     flex: 1,
@@ -259,5 +275,3 @@ const styles = StyleSheet.create({
 });
 
 export default ColabHomepage;
-
-
