@@ -99,8 +99,7 @@ npm install native-base
 
 ## Running the App
 
-1. ** Start the Development Server
-From your project root directory, run:**  
+1. ** Start the Development Server From your project root directory, run:**  
    ```bash
    npx expo start -c
    ```
