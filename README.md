@@ -122,13 +122,13 @@ npm install native-base
 
 ## Features
 
-- **Feature 1: Connected Real_Time Database **  
+- **Feature 1: Connected Real_Time Database**  
  In our MVP project you can see the implementation of a real-time database ✅
 
 - **Feature 2: Modern Aestetic Design**  
   Our app features a sleek, modern design with a clean layout, intuitive navigation, and a visually appealing aesthetic that enhances user experience. ✅
 
-- **Feature 3: Neat Written Code **  
+- **Feature 3: Neat Written Code**  
   Our app is built with clean, well-structured code that ensures efficiency, maintainability, and smooth performance. ✅
 
 ---
