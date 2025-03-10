@@ -1,216 +1,130 @@
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
+import { account, databases } from './config'; // Ensure correct imports
+import UUID from 'react-native-uuid';
+import { Query } from 'appwrite';
+
 const ProfileScreen = () => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
-    const [bio, setBio] = useState(''); // State for bio
+    const [bio, setBio] = useState('');
     const [currentUser, setCurrentUser] = useState(null);
-    const [if1, setIf] = useState(0); // 0 for sign up, 1 for sign in, 2 for profile
+    const [screenState, setScreenState] = useState(0); // 0: Sign Up, 1: Sign In, 2: Profile
     const [time, setTime] = useState('');
-  
-    // Update time every second
+
     useEffect(() => {
-      const interval = setInterval(() => {
-        const currentTime = new Date().toLocaleTimeString();
-        setTime(currentTime);
-      }, 1000);
-  
-      return () => clearInterval(interval);
+        const interval = setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
+        return () => clearInterval(interval);
     }, []);
-  
-    // Sign up user
-    const createUser = async () => {
-      try {
-        await deleteExistingSession(); // Delete any existing session before creating a new one
-  
-        const userId = UUID.v4(); // Generate unique user ID
-  
-        // Create the user
-        const response = await account.create(userId, email, password);
-        console.log('User created:', response);
-  
-        // If user creation is successful, store the email as currentUser
-        setCurrentUser(response.email);
-        setIf(2); // Navigate to profile screen
-  
-        // Store user bio
-        await saveUserBio(response.email);
-      } catch (error) {
-        console.error('Error creating account:', error);
-        Alert.alert('Error', 'Error creating account, please try again.');
-      }
-    };
-  
-    // Sign in user
-    const signIn = async () => {
-      try {
-        await deleteExistingSession(); // Delete any existing session before signing in
-  
-        // Create session for user
-        const session = await account.createEmailPasswordSession(email, password);
-        console.log('Session Data:', session);
-  
-        if (session && session.$id) {
-          setCurrentUser(email);
-          setIf(2); // Go to profile page
-  
-          // Fetch user bio
-          await fetchUserBio(email);
-        }
-      } catch (error) {
-        console.error('Error signing in:', error);
-        Alert.alert('Error', 'Failed to sign in, please check your credentials.');
-      }
-    };
-  
-    // Sign out user
-    const signOut = async () => {
-      try {
-        await account.deleteSession('current'); // Delete current session
-        setCurrentUser(null);
-        setIf(1); // Navigate to sign-in screen
-      } catch (error) {
-        console.error('Error signing out:', error);
-        Alert.alert('Error', 'Failed to sign out, please try again.');
-      }
-    };
-  
-    // Delete any existing session
+
     const deleteExistingSession = async () => {
-      try {
-        const sessions = await account.listSessions(); // List all sessions
-  
-        // Check if there's an active session and delete it
-        if (sessions.total > 0) {
-          await account.deleteSession('current'); // Delete the active session
-          console.log('Existing session deleted.');
+        try {
+            const sessions = await account.listSessions();
+            if (sessions.total > 0) {
+                await account.deleteSession('current');
+            }
+        } catch (error) {
+            console.error('Error deleting session:', error);
         }
-      } catch (error) {
-        console.error('Error deleting session:', error);
-      }
     };
-  
-    // Save user bio to the database
+
+    const createUser = async () => {
+        try {
+            await deleteExistingSession();
+            const userId = UUID.v4();
+            const response = await account.create(userId, email, password);
+            setCurrentUser(response.email);
+            setScreenState(2);
+            await saveUserBio(response.email);
+        } catch (error) {
+            Alert.alert('Error', 'Error creating account, please try again.');
+        }
+    };
+
+    const signIn = async () => {
+        try {
+            await deleteExistingSession();
+            const session = await account.createEmailPasswordSession(email, password);
+            if (session && session.$id) {
+                setCurrentUser(email);
+                setScreenState(2);
+                await fetchUserBio(email);
+            }
+        } catch (error) {
+            Alert.alert('Error', 'Failed to sign in, please check your credentials.');
+        }
+    };
+
+    const signOut = async () => {
+        try {
+            await account.deleteSession('current');
+            setCurrentUser(null);
+            setScreenState(1);
+        } catch (error) {
+            Alert.alert('Error', 'Failed to sign out, please try again.');
+        }
+    };
+
     const saveUserBio = async (userEmail) => {
-      try {
-        const response = await databases.createDocument(
-          '67cda1500033be49b7a3', // Database ID
-          '67cda18c0013cc528fce', // Collection ID
-          'unique()', // Auto-generated document ID
-          {
-            Email: userEmail,  // Store user email
-            Bio: bio,          // Use 'Bio' (with capital B) as defined in your collection
-          }
-        );
-        console.log('Bio saved:', response);
-      } catch (error) {
-        console.error('Error saving bio:', error);
-        Alert.alert('Error', 'Failed to save bio, please try again.');
-      }
-    };
-  
-    // Fetch user bio from the database
-    const fetchUserBio = async (userEmail) => {
-      try {
-        const response = await databases.listDocuments(
-          '67cda1500033be49b7a3', // Database ID
-          '67cda18c0013cc528fce', // Collection ID
-          [
-            Query.equal('Email', userEmail), // Query by user email
-          ]
-        );
-  
-        if (response.documents.length > 0) {
-          const userBio = response.documents[0].Bio; // Use 'Bio' (capital B) as defined in the schema
-          setBio(userBio); // Update bio state
-        } else {
-          setBio(''); // No bio found
+        try {
+            await databases.createDocument('67cda1500033be49b7a3', '67cda18c0013cc528fce', 'unique()', { Email: userEmail, Bio: bio });
+        } catch (error) {
+            Alert.alert('Error', 'Failed to save bio, please try again.');
         }
-      } catch (error) {
-        console.error('Error fetching bio:', error);
-      }
     };
-  
-    // Render UI for Sign Up
-    if (if1 === 0) {
-      return (
+
+    const fetchUserBio = async (userEmail) => {
+        try {
+            const response = await databases.listDocuments('67cda1500033be49b7a3', '67cda18c0013cc528fce', [Query.equal('Email', userEmail)]);
+            setBio(response.documents.length > 0 ? response.documents[0].Bio : '');
+        } catch (error) {
+            console.error('Error fetching bio:', error);
+        }
+    };
+
+    return (
         <View style={{ padding: 20 }}>
-          <Text>Create your account</Text>
-          <TextInput
-            placeholder="Enter your email"
-            style={{ borderWidth: 1, marginBottom: 10, padding: 10 }}
-            value={email}
-            onChangeText={setEmail}
-          />
-          <TextInput
-            placeholder="Enter your name"
-            style={{ borderWidth: 1, marginBottom: 10, padding: 10 }}
-            value={name}
-            onChangeText={setName}
-          />
-          <TextInput
-            placeholder="Enter your password"
-            style={{ borderWidth: 1, marginBottom: 10, padding: 10 }}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-          <TextInput
-            placeholder="Enter your bio"
-            style={{ borderWidth: 1, marginBottom: 10, padding: 10 }}
-            value={bio}
-            onChangeText={setBio}
-          />
-          <Button title="Sign Up" onPress={createUser} />
-          <Button title="Already have an account? Sign In" onPress={() => setIf(1)} />
+            {screenState === 0 && (
+                <>
+                    <Text>Create your account</Text>
+                    <TextInput placeholder="Enter your email" value={email} onChangeText={setEmail} style={styles.input} />
+                    <TextInput placeholder="Enter your name" value={name} onChangeText={setName} style={styles.input} />
+                    <TextInput placeholder="Enter your password" value={password} onChangeText={setPassword} secureTextEntry style={styles.input} />
+                    <TextInput placeholder="Enter your bio" value={bio} onChangeText={setBio} style={styles.input} />
+                    <Button title="Sign Up" onPress={createUser} />
+                    <Button title="Already have an account? Sign In" onPress={() => setScreenState(1)} />
+                </>
+            )}
+            {screenState === 1 && (
+                <>
+                    <Text>Sign In</Text>
+                    <TextInput placeholder="Enter your email" value={email} onChangeText={setEmail} style={styles.input} />
+                    <TextInput placeholder="Enter your password" value={password} onChangeText={setPassword} secureTextEntry style={styles.input} />
+                    <Button title="Sign In" onPress={signIn} />
+                    <Button title="Sign Up" onPress={() => setScreenState(0)} />
+                </>
+            )}
+            {screenState === 2 && (
+                <>
+                    <Text>Welcome, {currentUser}!</Text>
+                    <Text>Current Time: {time}</Text>
+                    <Text>Your Bio: {bio}</Text>
+                    <TextInput placeholder="Update your bio" value={bio} onChangeText={setBio} style={styles.input} />
+                    <Button title="Save Bio" onPress={() => saveUserBio(currentUser)} />
+                    <Button title="Sign Out" onPress={signOut} />
+                </>
+            )}
         </View>
-      );
-    }
-  
-    // Render Sign In UI
-    if (if1 === 1) {
-      return (
-        <View style={{ padding: 20 }}>
-          <Text>Sign In</Text>
-          <TextInput
-            placeholder="Enter your email"
-            style={{ borderWidth: 1, marginBottom: 10, padding: 10 }}
-            value={email}
-            onChangeText={setEmail}
-          />
-          <TextInput
-            placeholder="Enter your password"
-            style={{ borderWidth: 1, marginBottom: 10, padding: 10 }}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-          <Button title="Sign In" onPress={signIn} />
-          <Button title="sign up" onPress={() => setIf(0)} />
-  
-        </View>
-      );
-    }
-  
-    // Render Profile UI
-    if (if1 === 2) {
-      return (
-        <View style={{ padding: 20 }}>
-          <Text>Welcome, {currentUser}!</Text>
-          <Text>Current Time: {time}</Text>
-          <Text>Your Bio: {bio}</Text>
-  
-          <TextInput
-            placeholder="Update your bio"
-            style={{ borderWidth: 1, marginBottom: 10, padding: 10 }}
-            value={bio}
-            onChangeText={setBio}
-          />
-          <Button title="Save Bio" onPress={() => saveUserBio(currentUser)} />
-  
-          <Button title="Sign Out" onPress={signOut} />
-        </View>
-      );
-    }
-  
-    return null; // In case if1 is not 0, 1, or 2
-  };
+    );
+};
+
+const styles = {
+    input: {
+        borderWidth: 1,
+        marginBottom: 10,
+        padding: 10,
+    },
+};
+
+export default ProfileScreen;
