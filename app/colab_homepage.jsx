@@ -1,26 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import TinderCard from 'react-native-deck-swiper'; // Use a React Native compatible card swiper
 import logopic from '../assets/images/logopic.png';
 
 // Simple Navbar Component
 function Navbar() {
   return (
-    <View style={{
-      width: '100%',
-      backgroundColor: '#1a1a2e',
-      padding: 10,
-      color: '#e94560',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center'
-    }}>
-      <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity style={{ marginHorizontal: 10 }}>
-          <Text style={{ color: '#f9f9f9ff' }}>Home</Text>
+    <View style={styles.navbar}>
+      <View style={styles.navLinks}>
+        <TouchableOpacity style={styles.navItem}>
+          <Text style={styles.navText}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ marginHorizontal: 10 }}>
-          <Text style={{ color: '#f9f9f9ff' }}>Profile</Text>
+        <TouchableOpacity style={styles.navItem}>
+          <Text style={styles.navText}>Profile</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -30,14 +22,8 @@ function Navbar() {
 // Logo Component on the Left Side
 function Logo() {
   return (
-    <View style={{
-      position: 'absolute',
-      top: 10,
-      left: 10,
-      display: 'flex',
-      alignItems: 'center',
-    }}>
-      <Image source={logopic} style={{ height: 40 }} />
+    <View style={styles.logoContainer}>
+      <Image source={logopic} style={styles.logo} />
     </View>
   );
 }
@@ -132,9 +118,9 @@ function ColabHomepage() {
 
   if (currentIndex >= schools.length) {
     return (
-      <View>
+      <View style={styles.container}>
         <Navbar />
-        <Text style={{ textAlign: 'center', marginTop: 20, color: '#232323' }}>
+        <Text style={styles.noSchoolsText}>
           No more schools to match with right now!
         </Text>
       </View>
@@ -145,65 +131,29 @@ function ColabHomepage() {
   const distance = calculateDistance(userLocation, currentSchool.location);
 
   return (
-<<<<<<< HEAD
-    <View style={{ minHeight: '100vh', overflow: 'auto' }}>
+    <View style={styles.container}>
       <Navbar />
       <Logo />
-      <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 20 }}>
-=======
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Navbar />
-      <Logo />
-      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
->>>>>>> c50942089f504fe63250f92e552d9bfb2e5421b3
+      <View style={styles.cardContainer}>
         <TinderCard
           ref={cardRef}
           key={currentSchool.id}
           onSwipe={(dir) => handleSwipe(dir, currentSchool.id)}
           preventSwipe={['up', 'down']}
         >
-          <View
-            style={{
-<<<<<<< HEAD
-              width: 300,
-              height: 400,
-=======
-              width: '280px', // Reduced width
-              height: '350px', // Reduced height
->>>>>>> c50942089f504fe63250f92e552d9bfb2e5421b3
-              backgroundColor: '#aec391',
-              padding: 10,
-              boxShadow: '0 0 5px rgba(0,0,0,0.3)',
-              borderRadius: 8,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              cursor: 'grab',
-              color: '#232323',
-<<<<<<< HEAD
-=======
-              marginTop: '50px' // Added margin to push it lower
->>>>>>> c50942089f504fe63250f92e552d9bfb2e5421b3
-            }}
-          >
-            <View>
-              <Text style={{ marginBottom: 10 }}>{currentSchool.name}</Text>
-              <Text style={{ marginBottom: 10 }}>{currentSchool.description}</Text>
-              <Text style={{ marginBottom: 10 }}>
-                Rating: {currentSchool.rating} / 5
-              </Text>
-            </View>
-            <View>
-              <Text>Distance: {distance} km</Text>
-            </View>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>{currentSchool.name}</Text>
+            <Text style={styles.cardDescription}>{currentSchool.description}</Text>
+            <Text style={styles.cardRating}>Rating: {currentSchool.rating} / 5</Text>
+            <Text>Distance: {distance} km</Text>
           </View>
         </TinderCard>
-        <View style={{ marginTop: 10, flexDirection: 'row', gap: 10 }}>
-          <TouchableOpacity onPress={swipeLeft} style={{ padding: 10, backgroundColor: '#64adc3' }}>
-            <Text>Dislike</Text>
+        <View style={styles.swipeButtonsContainer}>
+          <TouchableOpacity onPress={swipeLeft} style={styles.swipeButton}>
+            <Text style={styles.buttonText}>Dislike</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={swipeRight} style={{ padding: 10, backgroundColor: '#64adc3' }}>
-            <Text>Like</Text>
+          <TouchableOpacity onPress={swipeRight} style={styles.swipeButton}>
+            <Text style={styles.buttonText}>Like</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -211,5 +161,92 @@ function ColabHomepage() {
   );
 }
 
+// Styles for the ProjectSelection component
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f0f0f0',
+    justifyContent: 'flex-start',
+  },
+  navbar: {
+    width: '100%',
+    backgroundColor: '#1a1a2e',
+    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  navLinks: {
+    flexDirection: 'row',
+  },
+  navItem: {
+    marginHorizontal: 10,
+  },
+  navText: {
+    color: '#f9f9f9ff',
+  },
+  logoContainer: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    alignItems: 'center',
+  },
+  logo: {
+    height: 40,
+    width: 40,
+  },
+  cardContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  card: {
+    width: 280,
+    height: 350,
+    backgroundColor: '#aec391',
+    padding: 10,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    justifyContent: 'space-between',
+    marginTop: 50, // Added margin to push card lower
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  cardDescription: {
+    fontSize: 14,
+    marginBottom: 10,
+  },
+  cardRating: {
+    fontSize: 14,
+    marginBottom: 10,
+  },
+  swipeButtonsContainer: {
+    marginTop: 10,
+    flexDirection: 'row',
+    gap: 10,
+  },
+  swipeButton: {
+    padding: 10,
+    backgroundColor: '#64adc3',
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  noSchoolsText: {
+    textAlign: 'center',
+    marginTop: 20,
+    color: '#232323',
+  },
+});
+
 export default ColabHomepage;
+
 
