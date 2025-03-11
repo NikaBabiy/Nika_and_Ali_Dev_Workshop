@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import TinderCard from 'react-tinder-card';
+import React, { useState, useEffect, useRef } from 'react';
+import TinderCard from 'react-tinder-card';// Make sure to adjust paths accordingly
+import Profile from './colab_profile';
 
-// Simple Navbar Component
+
 function Navbar() {
   return (
     <div style={{
@@ -16,47 +17,48 @@ function Navbar() {
       <a href="/colab_homepage" style={{ margin: '0 1rem', color: 'white', textDecoration: 'none' }}>
         Home
       </a>
-      <a href="/colab_signin" style={{ margin: '0 1rem', color: 'white', textDecoration: 'none' }}>
-        SignIn
+      <a href="/colab_profile" style={{ margin: '0 1rem', color: 'white', textDecoration: 'none' }}>
+        Profile
       </a>
     </div>
   );
 }
 
-// Dummy hook to simulate user profile.
-const useUserProfile = () => ({
-  userSchoolName: "Example International School",
-  isIsraeli: true,
-  userLocation: { lat: 32.0853, lng: 34.7818 }, // Tel Aviv coordinates
-});
-
-// Efficient Distance Calculation
-const calculateDistance = (loc1, loc2) => {
-  const toRad = (value) => (value * Math.PI) / 180;
-  const R = 6371; // Radius of the Earth in km
-  const dLat = toRad(loc2.lat - loc1.lat);
-  const dLng = toRad(loc2.lng - loc1.lng);
-  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(loc1.lat)) * Math.cos(toRad(loc2.lat)) * Math.sin(dLng / 2) ** 2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return (R * c).toFixed(1); // Return the distance in km
+const useUserProfile = () => {
+  return {
+    userSchoolName: "Example International School",
+    isIsraeli: true,
+    userLocation: { lat: 32.0853, lng: 34.7818 },
+  };
 };
 
-// Colab Homepage Component
+const calculateDistance = (loc1, loc2) => {
+  const toRad = (value) => (value * Math.PI) / 180;
+  const R = 6371; // Earth's radius in km
+  const dLat = toRad(loc2.lat - loc1.lat);
+  const dLng = toRad(loc2.lng - loc1.lng);
+  const a = Math.sin(dLat / 2) ** 2 +
+            Math.cos(toRad(loc1.lat)) *
+            Math.cos(toRad(loc2.lat)) *
+            Math.sin(dLng / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return (R * c).toFixed(1);
+};
+
 function ColabHomepage() {
   const [schools, setSchools] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const { isIsraeli, userLocation } = useUserProfile();
+
   const cardRef = useRef(null);
 
-  // Memoize the school data to avoid recalculating on every render
-  const dummyData = useMemo(() => [
-    { id: 1, name: 'Al-Quds Primary School', description: 'Focusing on language exchange programs.', nationality: 'Palestinian', location: { lat: 31.7683, lng: 35.2137 }, rating: 4.2 },
-    { id: 2, name: 'Bethlehem Secondary School', description: 'Promoting STEM education and cultural exchange.', nationality: 'Palestinian', location: { lat: 31.7054, lng: 35.2024 }, rating: 4.5 },
-    { id: 3, name: 'Jerusalem Central Academy', description: 'Excellent arts and music programs.', nationality: 'Israeli', location: { lat: 31.7683, lng: 35.2137 }, rating: 4.0 },
-  ], []);
-
   useEffect(() => {
-    // Filter and sort schools only when isIsraeli or userLocation changes
+    const dummyData = [
+      { id: 1, name: 'Al-Quds Primary School', description: 'Focusing on language exchange programs.', nationality: 'Palestinian', location: { lat: 31.7683, lng: 35.2137 }, rating: 4.2 },
+      { id: 2, name: 'Bethlehem Secondary School', description: 'Promoting STEM education and cultural exchange.', nationality: 'Palestinian', location: { lat: 31.7054, lng: 35.2024 }, rating: 4.5 },
+      { id: 3, name: 'Jerusalem Central Academy', description: 'Excellent arts and music programs.', nationality: 'Israeli', location: { lat: 31.7683, lng: 35.2137 }, rating: 4.0 },
+    ];
+
     const filteredSchools = dummyData.filter(school => {
       return isIsraeli ? school.nationality === 'Palestinian' : school.nationality === 'Israeli';
     });
@@ -68,30 +70,30 @@ function ColabHomepage() {
     });
 
     setSchools(sortedSchools);
-  }, [isIsraeli, userLocation, dummyData]);
+  }, [isIsraeli, userLocation]);
 
-  const handleSwipe = useCallback((direction, schoolId) => {
+  const handleSwipe = (direction, schoolId) => {
     console.log(`Swiped ${direction} on school ${schoolId}`);
-    setCurrentIndex((prev) => prev + 1);
-  }, []);
+    setCurrentIndex(prev => prev + 1);
+  };
 
-  const swipeLeft = useCallback(() => {
+  const swipeLeft = () => {
     if (cardRef.current) {
       cardRef.current.swipe('left');
     }
-  }, []);
+  };
 
-  const swipeRight = useCallback(() => {
+  const swipeRight = () => {
     if (cardRef.current) {
       cardRef.current.swipe('right');
     }
-  }, []);
+  };
 
-  const goToProfilePage = useCallback(() => {
-    window.location.href = '/colab_profile'; // Direct navigation
-  }, []);
+  const goToProfilePage = () => {
+    // Redirect to the profile page using window.location
+    window.location.href = '/colab_profile'; // Change the URL to your actual profile page path
+  };
 
-  // If no more schools, display a message
   if (currentIndex >= schools.length) {
     return (
       <div>
@@ -154,6 +156,7 @@ function ColabHomepage() {
           </button>
         </div>
 
+        {/* Button to go to Profile */}
         <div style={{ marginTop: '2rem' }}>
           <button
             onClick={goToProfilePage}
