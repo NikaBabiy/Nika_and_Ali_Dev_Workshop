@@ -235,3 +235,5 @@ function ProfileScreen () {
 
   return null; // In case if1 is not 0, 1, or 2
 };
+
+export default ProfileScreen;
