@@ -19,6 +19,28 @@ const account = new Account(client);
 // Initialize the Databases service
 const databases = new Databases(client);
 
+
+function Navbar() {
+  return (
+    <div style={{
+      width: '100%',
+      backgroundColor: '#333',
+      padding: '1rem',
+      color: 'white',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
+      <a href="/colab_homepage" style={{ margin: '0 1rem', color: 'white', textDecoration: 'none' }}>
+        Home
+      </a>
+      <a href="/colab_profile" style={{ margin: '0 1rem', color: 'white', textDecoration: 'none' }}>
+        Profile
+      </a>
+    </div>
+  );
+}
+
 function ProfileScreen () {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -155,6 +177,7 @@ function ProfileScreen () {
   if (if1 === 0){
     return (
       <View style={{ padding: 20 }}>
+        <Navbar/>
         <Text>Create your account</Text>
         <TextInput
           placeholder="Enter your email"
@@ -191,6 +214,7 @@ function ProfileScreen () {
   if (if1 === 1) {
     return (
       <View style={{ padding: 20 }}>
+        <Navbar/>
         <Text>Sign In</Text>
         <TextInput
           placeholder="Enter your email"
@@ -216,6 +240,7 @@ function ProfileScreen () {
   if (if1 === 2) {
     return (
       <View style={{ padding: 20 }}>
+        <Navbar/>
         <Text>Welcome, {currentUser}!</Text>
         <Text>Current Time: {time}</Text>
         <Text>Your Bio: {bio}</Text>
