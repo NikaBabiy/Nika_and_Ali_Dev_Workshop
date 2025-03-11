@@ -122,9 +122,9 @@ function ColabHomepage() {
         >
           <div
             style={{
-              width: '300px',
-              height: '400px',
-              backgroundColor: '#fff',
+              width: '250px',
+              height: '350px',
+              backgroundColor: '#AEC391',
               padding: '1rem',
               boxShadow: '0 0 5px rgba(0,0,0,0.3)',
               borderRadius: '8px',
@@ -148,10 +148,10 @@ function ColabHomepage() {
         </TinderCard>
 
         <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem' }}>
-          <button onClick={swipeLeft} style={{ padding: '0.5rem 1rem', fontSize: '1rem' }}>
+          <button onClick={swipeLeft} style={{ padding: '0.5rem 1rem', fontSize: '1rem', backgroundColor: '#64adc3' }}>
             Dislike
           </button>
-          <button onClick={swipeRight} style={{ padding: '0.5rem 1rem', fontSize: '1rem' }}>
+          <button onClick={swipeRight} style={{ padding: '0.5rem 1rem', fontSize: '1rem',  backgroundColor: '#64adc3' }}>
             Like
           </button>
         </div>

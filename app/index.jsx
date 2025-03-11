@@ -62,6 +62,6 @@ const styles = StyleSheet.create({
   },
   cardDescription: {
     fontSize: 14,
-    color: '#7f8c8d',
+    color: '#00001',
   },
 });

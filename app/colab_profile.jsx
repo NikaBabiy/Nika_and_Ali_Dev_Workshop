@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {StyleSheet,Text,View,Button,Linking,TextInput,FlatList,Image,Alert,TouchableOpacity} from 'react-native';
+import {StyleSheet,Text,View,Button,TextInput,FlatList,Image,Alert,TouchableOpacity} from 'react-native';
 import { Client, Account, Query } from 'appwrite';
 import { Databases } from 'appwrite';
 import UUID from 'react-native-uuid'; 
@@ -18,28 +18,6 @@ const account = new Account(client);
 
 // Initialize the Databases service
 const databases = new Databases(client);
-
-
-function Navbar() {
-  return (
-    <div style={{
-      width: '100%',
-      backgroundColor: '#333',
-      padding: '1rem',
-      color: 'white',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center'
-    }}>
-      <a href="/colab_homepage" style={{ margin: '0 1rem', color: 'white', textDecoration: 'none' }}>
-        Home
-      </a>
-      <a href="/colab_profile" style={{ margin: '0 1rem', color: 'white', textDecoration: 'none' }}>
-        Profile
-      </a>
-    </div>
-  );
-}
 
 function ProfileScreen () {
   const [password, setPassword] = useState('');
@@ -86,35 +64,24 @@ function ProfileScreen () {
   // Sign in user
   const signIn = async () => {
     try {
-      // Ensure the email and password are not empty
-      if (!email || !password) {
-        Alert.alert('Error', 'Email and Password are required.');
-        return;
-      }
-  
+      await deleteExistingSession(); // Delete any existing session before signing in
+
+      // Create session for user
       const session = await account.createEmailPasswordSession(email, password);
-      console.log('Session created:', session);
-  
-      // Check if session is created and move to profile screen
+      console.log('Session Data:', session);
+
       if (session && session.$id) {
-        Alert.alert('Success', 'Successfully signed in!');
-        // Proceed with the profile page
+        setCurrentUser(email);
+        setIf(2); // Go to profile page
+
+        // Fetch user bio
+        await fetchUserBio(email);
       }
     } catch (error) {
-      console.error('Error during sign in:', error);
-  
-      // Handle the rate limit error
-      if (error.message && error.message.includes('Rate limit')) {
-        Alert.alert('Error', 'Rate limit exceeded. Please try again after some time.');
-      } else {
-        Alert.alert('Error', 'Failed to sign in, please check your credentials.');
-      }
+      console.error('Error signing in:', error);
+      Alert.alert('Error', 'Failed to sign in, please check your credentials.');
     }
   };
-  
-  
-  
-  
 
   // Sign out user
   const signOut = async () => {
@@ -188,7 +155,6 @@ function ProfileScreen () {
   if (if1 === 0){
     return (
       <View style={{ padding: 20 }}>
-        <Navbar />
         <Text>Create your account</Text>
         <TextInput
           placeholder="Enter your email"
@@ -225,7 +191,6 @@ function ProfileScreen () {
   if (if1 === 1) {
     return (
       <View style={{ padding: 20 }}>
-        <Navbar />
         <Text>Sign In</Text>
         <TextInput
           placeholder="Enter your email"
@@ -251,7 +216,6 @@ function ProfileScreen () {
   if (if1 === 2) {
     return (
       <View style={{ padding: 20 }}>
-        <Navbar />
         <Text>Welcome, {currentUser}!</Text>
         <Text>Current Time: {time}</Text>
         <Text>Your Bio: {bio}</Text>
@@ -271,5 +235,3 @@ function ProfileScreen () {
 
   return null; // In case if1 is not 0, 1, or 2
 };
-
-export default ProfileScreen;
