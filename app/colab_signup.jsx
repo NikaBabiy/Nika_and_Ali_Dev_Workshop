@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Alert } from 'react-native';
+import { View, Text, TextInput, Button, Alert ,Linking} from 'react-native';
 import UUID from 'react-native-uuid';
 import { Query, Account, Databases, Client } from 'appwrite';
-import { profile_page } from '../app/colab_Profile1'; // Assuming this function navigates to the profile page
+import { profile_page } from '../app/colab_profile'; // Assuming this function navigates to the profile page
 import {Sign_in} from '../app/colab_signin';
 
 
@@ -23,6 +23,8 @@ const Sign_up = () => {
   const [bio, setBio] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
   const [screenState, setScreenState] = useState(0); // 0: Sign Up, 1: Sign In, 2: Profile
+  const [name,setName] = useState('')
+
 
   const deleteExistingSession = async () => {
     try {
@@ -48,6 +50,11 @@ const Sign_up = () => {
     }
   };
 
+  const navigateToSignIn = () => {
+      // If you're using Linking to go to a separate URL (could be a web URL or external app link)
+      Linking.openURL('/colab_signin'); // Replace with the actual URL
+    };
+
   useEffect(() => {
     const interval = setInterval(() => {
       const currentTime = new Date().toLocaleTimeString();
@@ -67,7 +74,7 @@ const Sign_up = () => {
           <TextInput placeholder="Enter your password" value={password} onChangeText={setPassword} secureTextEntry style={styles.input} />
           <TextInput placeholder="Enter your bio" value={bio} onChangeText={setBio} style={styles.input} />
           <Button title="Sign Up" onPress={createUser} />
-          <Button title="Already have an account? Sign In" onPress={() => Sign_in()} />
+          <Button title="Already have an account? Sign In" onPress={navigateToSignIn} />
         </>
       )
     </View>

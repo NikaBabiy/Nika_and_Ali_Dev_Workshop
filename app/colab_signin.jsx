@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { Query, Account, Databases, Client } from 'appwrite';
-import { profile_page } from '../app/colab_Profile1'; // Assuming this function navigates to the profile page
-import {Sign_up} from '../app/colab_signup';
 
-
+// Appwrite setup
 const client = new Client();
 client.setEndpoint('https://cloud.appwrite.io/v1')  // Appwrite API endpoint
   .setProject('67cda0b40018d09b93a6');  // Your Appwrite Project ID
 
-// Initialize the Account service
 const account = new Account(client);
-
-// Initialize the Databases service
 const databases = new Databases(client);
 
-const Sign_in = () => {
+const Sign_in = ({ navigation }) => {  // Add navigation prop
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [time, setTime] = useState('');
   const [bio, setBio] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
-  const [screen, setIf] = useState(1); // Assuming default is 1, change as needed
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -36,15 +30,14 @@ const Sign_in = () => {
     try {
       await deleteExistingSession(); // Delete any existing session before signing in
 
-      // Create session for user
       const session = await account.createEmailPasswordSession(email, password);
       console.log('Session Data:', session);
 
       if (session && session.$id) {
         setCurrentUser(email);
-        profile_page(); // Go to profile page
+        // Go to profile page using navigation
+        navigation.navigate('Profile');  // Use React Navigation to navigate to 'Profile'
 
-        // Fetch user bio
         await fetchUserBio(email);
       }
     } catch (error) {
@@ -58,14 +51,14 @@ const Sign_in = () => {
       const response = await databases.listDocuments(
         '67cda1500033be49b7a3', // Database ID
         '67cda18c0013cc528fce', // Collection ID
-        [Query.equal('Email', userEmail)] // Query by user email
+        [Query.equal('Email', userEmail)]
       );
 
       if (response.documents.length > 0) {
-        const userBio = response.documents[0].Bio; // Use 'Bio' (capital B) as defined in the schema
-        setBio(userBio); // Update bio state
+        const userBio = response.documents[0].Bio;
+        setBio(userBio);
       } else {
-        setBio(''); // No bio found
+        setBio('');
       }
     } catch (error) {
       console.error('Error fetching bio:', error);
@@ -74,16 +67,19 @@ const Sign_in = () => {
 
   const deleteExistingSession = async () => {
     try {
-      const sessions = await account.listSessions(); // List all sessions
-
-      // Check if there's an active session and delete it
+      const sessions = await account.listSessions();
       if (sessions.total > 0) {
-        await account.deleteSession('current'); // Delete the active session
+        await account.deleteSession('current');
         console.log('Existing session deleted.');
       }
     } catch (error) {
       console.error('Error deleting session:', error);
     }
+  };
+
+  const navigateToSignUp = () => {
+    // Navigate to Sign Up screen using React Navigation
+    navigation.navigate('SignUp'); // Navigate to Sign Up screen
   };
 
   return (
@@ -103,9 +99,10 @@ const Sign_in = () => {
         secureTextEntry
       />
       <Button title="Sign In" onPress={signIn} />
-      <Button title="Sign Up" onPress={() => Sign_up()} />
+      <Button title="Go to Sign Up" onPress={navigateToSignUp} />
     </View>
   );
 };
 
 export default Sign_in;
+
